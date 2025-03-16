@@ -7,7 +7,7 @@
  - Discover customer segments based on spending patterns, product preferences, and frequency of purchases.
 
 
-###Solutions
+### Solutions
 
 ### 1. Customer Purchase Frequency & Spending Patterns
 
