@@ -9,7 +9,7 @@
 
 ###Solutions
 
---1. Customer Purchase Frequency & Spending Patterns
+### 1. Customer Purchase Frequency & Spending Patterns
 
 ### Find total number of purchases per customer
 
@@ -19,61 +19,66 @@ from orders
 group by customer_id, customer_name
 order by Total_purchase desc
 ```
---Find average order value per customer
-
+### Find average order value per customer
+```SQL
 select customer_id, Round(AVG(sales),2) as Avearge_order_value
 from orders
 group by customer_id
 order by Avearge_order_value desc
+```
 
---Identify Top 10 high-spending customers
-
+### Identify Top 10 high-spending customers
+```SQL
 select Top 10 customer_id, customer_name, Round(sum(sales),2) as Total_spend
 from orders
 group by customer_id, customer_name
 order by Total_spend desc
+```
 
---2. Product Category Analysis
+### 2. Product Category Analysis
 
---Find most purchased product categories
-
+###Find most purchased product categories
+```SQL
 select Category, count(1) as No_of_times_purchased
 from Orders
 group by Category
 order by No_of_times_purchased desc
+```
 
---Find top-selling products
-
+### Find top-selling products
+```SQL
 select Product_id, product_name, Count(product_id) as No_of_times_sold
 from orders
 group by Product_id, product_name
 order by No_of_times_sold desc
+```
 
---Find products with highest revenue
-
+### Find products with highest revenue
+```SQL
 select product_id, product_name, Round(sum(Sales), 2) as High_revenue
 from orders
 group by product_id, product_name
 order by High_revenue desc
+```
 
---3.  Impact of Discounts & Promotions
+### 3.  Impact of Discounts & Promotions
 
---Check how many customers buy only when discounts are available
-
+### Check how many customers buy only when discounts are available
+```SQL
 select count(distinct customer_id) as Buy_when_discounts
 from orders
 where Discount > 0
-
-
+```
+```SQL
 select customer_id, customer_name, count(order_id) as Buy_when_discounts
 from orders
 where Discount > 0
 group by customer_id, customer_name
 order by Buy_when_discounts desc
+```
 
-
--- Compare purchase behavior before and during sales periods
-
+### Compare purchase behavior before and during sales periods
+```SQL
 with Prev_month_sales as (
 select Datepart(Month, order_date) as Month, round(sum(Sales), 2) as Total_orders
 from orders
@@ -87,36 +92,35 @@ from Prev_month_sales
 select *, Round(Total_orders - Prior_sales, 2) as Profit_loss
 from Profit_loss_analysis
 order by Month
+```
 
---4. Cart Abandonment & Payment Preferences
---Identify common reasons for cart abandonment (if dataset has cart abandonment data)
+### 4. Cart Abandonment & Payment Preferences
 
--- Check preferred payment methods
-
+### Check preferred payment methods
+```SQL
 select r.payment_method, count(o.order_id) as Usage_count
 from orders o
 left join rating r on o.customer_id = r.id
 group by r.payment_method
+```
 
+### 5. Customer Reviews & Returns
 
---5. Customer Reviews & Returns
-
---Find average customer rating per product (if ratings data is available)
-
+### Find average customer rating per product (if ratings data is available)
+```SQL
 select o.product_id, o.product_name, Round(avg(r.rating), 2) as Average_rating
 from orders o
 left join rating r on o.customer_id = r.id
 group by o.product_id, o.product_name
 order by Average_rating
+```
 
-
---Find products with the highest return rates
-
+### Find products with the highest return rates
+```SQL
 select o.product_id, o.Product_Name, count(r.Returned) as Return_count
 from orders o
 left join Returns r on o.Order_ID = r.[Order ID]
 where r.Returned = 'yes'
 group by o.product_id, o.Product_Name
 order by Return_count desc
-
-
+```
