@@ -2,12 +2,12 @@
 
 --Find total number of purchases per customer
 
-
+```SQL
 Select customer_id, customer_name, count(order_id) as Total_purchase
 from orders
 group by customer_id, customer_name
 order by Total_purchase desc
-
+```
 --Find average order value per customer
 
 select customer_id, Round(AVG(sales),2) as Avearge_order_value
